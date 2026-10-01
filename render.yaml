@@ -1,0 +1,30 @@
+# Blueprint для Render.com — поднимает все 3 сайта одной кнопкой
+# Документация: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: lab-node
+    runtime: node
+    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    rootDir: site-node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 10000
+
+  - type: web
+    name: lab-php
+    runtime: docker
+    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    rootDir: site-php
+    dockerfilePath: ./Dockerfile
+    plan: free
+
+  - type: web
+    name: lab-aspnet
+    runtime: docker
+    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    rootDir: site-aspnet
+    dockerfilePath: ./Dockerfile
+    plan: free
