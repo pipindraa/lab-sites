@@ -1,27 +1,18 @@
-# Blueprint для Render.com — поднимает все 3 сайта одной кнопкой
-# Документация: https://render.com/docs/blueprint-spec
 services:
-  # Сайт №1 — nginx (reverse proxy) + Node.js/Express, оба процесса в одном контейнере
   - type: web
     name: lab-node
     runtime: docker
-    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-node
-    dockerfilePath: ./site-node/Dockerfile
     plan: free
 
   - type: web
     name: lab-php
     runtime: docker
-    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-php
-    dockerfilePath: ./site-php/Dockerfile
     plan: free
 
   - type: web
     name: lab-aspnet
     runtime: docker
-    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-aspnet
-    dockerfilePath: ./site-aspnet/Dockerfile
     plan: free
