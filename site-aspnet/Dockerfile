@@ -8,6 +8,5 @@ RUN dotnet publish -c Release -o /app
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app ./
-# Render дает порт в $PORT — слушаем именно его
 EXPOSE 10000
 ENTRYPOINT ["sh", "-c", "dotnet site-aspnet.dll --urls http://+:$PORT"]

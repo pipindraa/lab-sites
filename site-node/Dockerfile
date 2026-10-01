@@ -1,9 +1,7 @@
-# Образ по мотивам node:20-alpine: ставим nginx и гоняем его перед Express
 FROM node:20-alpine
 
 WORKDIR /app
 
-# сначала только манифест — слой с зависимостями кешируется между сборками
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 

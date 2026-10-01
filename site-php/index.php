@@ -1,5 +1,4 @@
 <?php
-// Сайт №2: ОДНОСТРАНИЧНИК на чистом PHP (без фреймворков)
 function esc($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 $name = $_POST['name'] ?? '';
 $msg  = $_POST['msg'] ?? '';
@@ -26,7 +25,7 @@ $sent = ($_SERVER['REQUEST_METHOD'] === 'POST');
     <ul>
       <li>Чистый PHP, без фреймворков</li>
       <li>Один файл + один CSS — проще некуда</li>
-      <li>На сервере работает через <code>php-fpm + nginx</code>, локально — через <code>php -S</code></li>
+      <li>На сервере работает через Apache с модулем PHP, локально — через <code>php -S</code></li>
     </ul>
   </section>
   <section id="contacts">
