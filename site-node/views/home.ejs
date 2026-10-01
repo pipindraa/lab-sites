@@ -1,0 +1,6 @@
+<%- include('header') %>
+<p>Это многостраничный сайт на Express. Каждая страница — отдельный маршрут Express
+и отдельный шаблон <code>views/*.ejs</code>.</p>
+<p>Текущее серверное время: <b><%= new Date().toLocaleString('ru-RU') %></b></p>
+<p>Запрос обработал: <b><%= client %></b> (nginx передаёт IP в заголовке X-Forwarded-For).</p>
+<%- include('footer') %>

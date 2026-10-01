@@ -6,7 +6,7 @@
 
 | №   | Папка         | Тип                                     | Технология                  | Как устроен сервер                                  |
 | --- | ------------- | --------------------------------------- | --------------------------- | ---------------------------------------------------- |
-| 1   | `site-node`   | Многостраничник + JSON API              | Node.js 20 + Express        | **nginx** (reverse proxy) → Express на `127.0.0.1:3000` |
+| 1   | `site-node`   | Многостраничник + JSON API              | Node.js 20 + Express + EJS  | **nginx** (reverse proxy) → Express на `127.0.0.1:3000` |
 | 2   | `site-php`    | Одностраничник-лендинг с формой         | Чистый PHP 8 без фреймворка | **Apache** + модуль PHP, `index.php` в DocumentRoot     |
 | 3   | `site-aspnet` | «Еще что-нибудь»: 2 страницы + JSON API | ASP.NET Core 10 Minimal API | Kestrel слушает `$PORT` напрямую                       |
 
@@ -42,8 +42,9 @@ git push -u origin main
 
 ## 2. Что уже подготовлено для хостинга
 - `site-node/Dockerfile` — образ `node:20-alpine` + nginx. `start.sh` ставит nginx на порт `$PORT`, запускает Node на `127.0.0.1:3000` и nginx как фронт; если любой процесс падает — падает контейнер.
-- `site-node/nginx.conf` — сам reverse proxy: `proxy_pass http://127.0.0.1:3000` + заголовки `X-Forwarded-*`.
-- `site-node/server.js` — Express слушает только внутренний порт `APP_PORT` (по умолчанию 3000), наружу его не видно.
+- `site-node/nginx.conf` — сам reverse proxy: статику из `/public` отдаёт сам nginx по пути `/static/`, всё остальное проксирует на `proxy_pass http://127.0.0.1:3000` с заголовками `X-Forwarded-*`.
+- `site-node/views/*.ejs` — шаблоны страниц (`header.ejs`, `footer.ejs` подключаются через `include`), рендерятся через `res.render`. HTML лежит в файлах, а не собирается строками в коде.
+- `site-node/server.js` — только маршруты (`app.get` / `app.post` рендерят шаблон), слушает внутренний порт `APP_PORT` (по умолчанию 3000), наружу его не видно.
 - `site-php/Dockerfile` — образ `php:8.3-apache`; при старте Apache переводится на порт `$PORT` (Render требует слушать именно его).
 - `site-aspnet/Dockerfile` — двухстадийная сборка (sdk → aspnet); запуск через `--urls http://+:$PORT`.
 - `render.yaml` в корне — Blueprint: описывает все 3 сервиса (имя, runtime, где код, как собирать). Пути `dockerfilePath` считаются от корня репозитория.

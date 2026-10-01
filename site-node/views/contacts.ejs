@@ -1,0 +1,7 @@
+<%- include('header') %>
+<form method="POST" action="/contacts">
+  <label>Имя: <input name="name" required></label><br><br>
+  <label>Сообщение:<br><textarea name="msg" rows="4" cols="40" required></textarea></label><br><br>
+  <button>Отправить</button>
+</form>
+<%- include('footer') %>

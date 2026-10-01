@@ -1,0 +1,10 @@
+<%- include('header') %>
+<p>Демо для методички: nginx как reverse proxy, статика и JSON API.</p>
+<ul>
+  <li>GET / — главная</li>
+  <li>GET /about — эта страница</li>
+  <li>GET /contacts — форма</li>
+  <li>GET /api/info — JSON</li>
+</ul>
+<p>Статический CSS отдаёт nginx напрямую из <code>/public</code>, а страницы рендерит Express.</p>
+<%- include('footer') %>
