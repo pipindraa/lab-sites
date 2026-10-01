@@ -4,7 +4,7 @@ services:
   - type: web
     name: lab-node
     runtime: node
-    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-node
     plan: free
     buildCommand: npm install
@@ -16,7 +16,7 @@ services:
   - type: web
     name: lab-php
     runtime: docker
-    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-php
     dockerfilePath: ./Dockerfile
     plan: free
@@ -24,7 +24,7 @@ services:
   - type: web
     name: lab-aspnet
     runtime: docker
-    repo: https://github.com/ТВОЙ_НИК/lab-sites
+    repo: https://github.com/pipindraa/lab-sites
     rootDir: site-aspnet
     dockerfilePath: ./Dockerfile
     plan: free
