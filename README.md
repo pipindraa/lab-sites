@@ -17,4 +17,4 @@ cd site-php; php -S localhost:3002     # http://localhost:3002
 cd site-aspnet; dotnet run             # порт из лога
 ```
 
-Деплой на сервер — см. `МЕТОДИЧКА.md`, конфиги — в `deploy/`, бесплатный хостинг — `render.yaml`.
+Деплой на бесплатный хостинг — см. `МЕТОДИЧКА.md`, Blueprint — `render.yaml`.
