@@ -4,11 +4,13 @@
 
 **Что в папке `lab-sites`:**
 
-| №   | Папка         | Тип                                     | Технология                  |
-| --- | ------------- | --------------------------------------- | --------------------------- |
-| 1   | `site-node`   | Многостраничник + JSON API              | Node.js 20 + Express        |
-| 2   | `site-php`    | Одностраничник-лендинг с формой         | Чистый PHP 8 без фреймворка |
-| 3   | `site-aspnet` | «Еще что-нибудь»: 2 страницы + JSON API | ASP.NET Core 10 Minimal API |
+| №   | Папка         | Тип                                     | Технология                  | Как устроен сервер                                  |
+| --- | ------------- | --------------------------------------- | --------------------------- | ---------------------------------------------------- |
+| 1   | `site-node`   | Многостраничник + JSON API              | Node.js 20 + Express        | **nginx** (reverse proxy) → Express на `127.0.0.1:3000` |
+| 2   | `site-php`    | Одностраничник-лендинг с формой         | Чистый PHP 8 без фреймворка | **Apache** + модуль PHP, `index.php` в DocumentRoot     |
+| 3   | `site-aspnet` | «Еще что-нибудь»: 2 страницы + JSON API | ASP.NET Core 10 Minimal API | Kestrel слушает `$PORT` напрямую                       |
+
+Идея для сайтов №1 и №2 одинаковая: **веб-сервер снаружи, приложение внутри.** В случае с PHP перед приложением стоит Apache, в случае с Node — nginx.
 
 Схема развертывания:
 
@@ -39,7 +41,9 @@ git push -u origin main
 > Settings → Developer settings → Personal access tokens → Generate new (галочка `repo`).
 
 ## 2. Что уже подготовлено для хостинга
-- `site-node/package.json` — команды `npm install` / `npm start`. Сервер слушает порт из переменной `PORT`.
+- `site-node/Dockerfile` — образ `node:20-alpine` + nginx. `start.sh` ставит nginx на порт `$PORT`, запускает Node на `127.0.0.1:3000` и nginx как фронт; если любой процесс падает — падает контейнер.
+- `site-node/nginx.conf` — сам reverse proxy: `proxy_pass http://127.0.0.1:3000` + заголовки `X-Forwarded-*`.
+- `site-node/server.js` — Express слушает только внутренний порт `APP_PORT` (по умолчанию 3000), наружу его не видно.
 - `site-php/Dockerfile` — образ `php:8.3-apache`; при старте Apache переводится на порт `$PORT` (Render требует слушать именно его).
 - `site-aspnet/Dockerfile` — двухстадийная сборка (sdk → aspnet); запуск через `--urls http://+:$PORT`.
 - `render.yaml` в корне — Blueprint: описывает все 3 сервиса (имя, runtime, где код, как собирать). Пути `dockerfilePath` считаются от корня репозитория.
@@ -67,13 +71,14 @@ git push -u origin main
 | -------------------------------- | ------------------------------------------------------------------------------------------ |
 | Blueprint не находит Dockerfile  | `dockerfilePath` должен быть от корня репо (`./site-php/Dockerfile`)                       |
 | Сервис упал с ошибкой порта      | приложение слушает фиксированный порт вместо `$PORT` → смотреть `Dockerfile` / `server.js` |
+| 502 на сайте Node                 | nginx не смог достучаться до Express → в Logs проверить, поднялся ли Node на 3000      |
 | 404/пустая страница после деплоя | проверить Logs сервиса и что код запушен (`git push`)                                      |
 
 ## Локальный прогон (без хостинга)
 
 ```bash
-# №1 (многостраничник):
-cd site-node && npm install && npm start      # → http://localhost:3001
+# №1 (многостраничник, локально без nginx):
+cd site-node && npm install && npm start      # → http://localhost:3000
 # №2 (одностраничник):
 cd site-php && php -S localhost:3002          # → http://localhost:3002
 # №3 (API):

@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.APP_PORT || 3000; // внутренний порт; наружу (80/$PORT) смотрит nginx
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
@@ -43,4 +43,4 @@ app.get('/api/info', (req, res) => res.json({
   time: new Date().toISOString(), uptime_sec: Math.round(process.uptime())
 }));
 
-app.listen(PORT, () => console.log(`site-node слушает http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`[node] Express слушает 127.0.0.1:${PORT} (за nginx)`));
