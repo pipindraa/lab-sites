@@ -47,7 +47,7 @@ git push -u origin main
 - `site-node/server.js` — только маршруты (`app.get` / `app.post` рендерят шаблон), слушает внутренний порт `APP_PORT` (по умолчанию 3000), наружу его не видно.
 - `site-php/Dockerfile` — образ `php:8.3-apache`; при старте Apache переводится на порт `$PORT` (Render требует слушать именно его).
 - `site-aspnet/Dockerfile` — двухстадийная сборка (sdk → aspnet); запуск через `--urls http://+:$PORT`.
-- `render.yaml` в корне — Blueprint: описывает все 3 сервиса (имя, runtime, где код, как собирать). Пути `dockerfilePath` считаются от корня репозитория.
+- `render.yaml` в корне — Blueprint: описывает все 3 сервиса (имя, runtime, папка с кодом `rootDir`). Dockerfile Render берёт из `rootDir` сам, поэтому `dockerfilePath` указывать не нужно.
 
 ## 3. Деплой одной кнопкой
 
@@ -70,7 +70,7 @@ git push -u origin main
 
 | Ошибка                           | Причина → решение                                                                          |
 | -------------------------------- | ------------------------------------------------------------------------------------------ |
-| Blueprint не находит Dockerfile  | `dockerfilePath` должен быть от корня репо (`./site-php/Dockerfile`)                       |
+| `lstat .../site-aspnet/site-aspnet: no such file` | в Blueprint задан `dockerfilePath` вместе с `rootDir` — Render склеивает их в несуществующий путь. Убрать `dockerfilePath`, оставить только `rootDir` |
 | Сервис упал с ошибкой порта      | приложение слушает фиксированный порт вместо `$PORT` → смотреть `Dockerfile` / `server.js` |
 | 502 на сайте Node                 | nginx не смог достучаться до Express → в Logs проверить, поднялся ли Node на 3000      |
 | 404/пустая страница после деплоя | проверить Logs сервиса и что код запушен (`git push`)                                      |
