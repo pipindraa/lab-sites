@@ -18,7 +18,7 @@ services:
     runtime: docker
     repo: https://github.com/pipindraa/lab-sites
     rootDir: site-php
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./site-php/Dockerfile
     plan: free
 
   - type: web
@@ -26,5 +26,5 @@ services:
     runtime: docker
     repo: https://github.com/pipindraa/lab-sites
     rootDir: site-aspnet
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./site-aspnet/Dockerfile
     plan: free
