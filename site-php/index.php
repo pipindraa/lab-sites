@@ -1,6 +1,5 @@
 <?php
 // Сайт №2: ОДНОСТРАНИЧНИК на чистом PHP (без фреймворков)
-// Все секции на одной странице, форма обрабатывается тем же файлом.
 function esc($s){ return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 $name = $_POST['name'] ?? '';
 $msg  = $_POST['msg'] ?? '';

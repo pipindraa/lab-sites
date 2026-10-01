@@ -1,4 +1,4 @@
-// Сайт №3: ASP.NET Core — минимальное API + 2 страницы («еще что-нибудь»)
+// Сайт №3: ASP.NET Core — минимальное API + 2 страницы
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
