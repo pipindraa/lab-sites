@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-sed -i "s/8080/$PORT/g" /etc/nginx/conf.d/default.conf
+sed -i "s/8080/$PORT/g" /etc/nginx/nginx.conf
 
 node server.js &
 

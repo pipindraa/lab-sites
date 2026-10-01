@@ -10,7 +10,7 @@ RUN npm ci --omit=dev
 COPY server.js ./
 COPY public ./public
 COPY views ./views
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh && mkdir -p /usr/share/nginx/html
 
